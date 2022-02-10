@@ -1,0 +1,61 @@
+definitions:
+  errcode.Error:
+    type: object
+  model.Tag:
+    properties:
+      content:
+        type: string
+      conver_image_url:
+        type: string
+      create_by:
+        type: string
+      created_on:
+        type: integer
+      deleted_on:
+        type: integer
+      desc:
+        type: string
+      id:
+        type: integer
+      is_del:
+        type: integer
+      modified_by:
+        type: string
+      modified_on:
+        type: integer
+      state:
+        type: integer
+      title:
+        type: string
+    type: object
+info:
+  contact: {}
+  description: Go語言程式設計之旅：一起用Go做專案
+  termsOfService: https://github.com/go-programming-tour-book
+  title: 部落格系統
+paths:
+  /api/v1/tags:
+    get:
+      parameters:
+      - description: 標籤名稱
+        in: query
+        maxLength: 100
+        name: name
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 成功
+          schema:
+            $ref: '#/definitions/model.Tag'
+        "400":
+          description: 請求錯誤
+          schema:
+            $ref: '#/definitions/errcode.Error'
+        "500":
+          description: 內部錯誤
+          schema:
+            $ref: '#/definitions/errcode.Error'
+      summary: 取得單個標籤
+swagger: "2.0"

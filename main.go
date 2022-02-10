@@ -13,6 +13,9 @@ var (
 	port = "8080"
 )
 
+// @title 部落格系統
+// @version v1.0
+// @termsOfService https://github.com/blog-small-project
 func main() {
 	if herokuPort := os.Getenv("PORT"); herokuPort != "" {
 		port = os.Getenv("PORT")

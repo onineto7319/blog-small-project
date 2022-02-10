@@ -4,8 +4,9 @@ import (
 	"net/http"
 
 	v1 "github.com/blog-small-project/internal/router/api/v1"
-
 	"github.com/gin-gonic/gin"
+	ginSwagger "github.com/swaggo/gin-swagger"
+	"github.com/swaggo/gin-swagger/swaggerFiles"
 )
 
 func New() *gin.Engine {
@@ -13,6 +14,10 @@ func New() *gin.Engine {
 
 	r.Use(gin.Logger())
 	r.Use(gin.Recovery())
+
+	{
+		r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
+	}
 
 	article := v1.GetArticleInstance()
 	tag := v1.GetTagInstance()
