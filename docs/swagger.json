@@ -1,10 +1,10 @@
 {
     "swagger": "2.0",
     "info": {
-        "description": "Go語言程式設計之旅：一起用Go做專案",
         "title": "部落格系統",
-        "termsOfService": "https://github.com/go-programming-tour-book",
-        "contact": {}
+        "termsOfService": "https://github.com/blog-small-project",
+        "contact": {},
+        "version": "v1.0"
     },
     "paths": {
         "/api/v1/tags": {

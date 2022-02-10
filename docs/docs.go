@@ -10,7 +10,7 @@ const docTemplate_swagger = `{
     "info": {
         "description": "{{escape .Description}}",
         "title": "{{.Title}}",
-        "termsOfService": "https://github.com/go-programming-tour-book",
+        "termsOfService": "https://github.com/blog-small-project",
         "contact": {},
         "version": "{{.Version}}"
     },
@@ -105,12 +105,12 @@ const docTemplate_swagger = `{
 
 // SwaggerInfo_swagger holds exported Swagger Info so clients can modify it
 var SwaggerInfo_swagger = &swag.Spec{
-	Version:          "",
+	Version:          "v1.0",
 	Host:             "",
 	BasePath:         "",
 	Schemes:          []string{},
 	Title:            "部落格系統",
-	Description:      "Go語言程式設計之旅：一起用Go做專案",
+	Description:      "",
 	InfoInstanceName: "swagger",
 	SwaggerTemplate:  docTemplate_swagger,
 }

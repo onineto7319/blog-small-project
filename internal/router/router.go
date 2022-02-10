@@ -3,6 +3,7 @@ package router
 import (
 	"net/http"
 
+	_ "github.com/blog-small-project/docs"
 	v1 "github.com/blog-small-project/internal/router/api/v1"
 	"github.com/gin-gonic/gin"
 	ginSwagger "github.com/swaggo/gin-swagger"
