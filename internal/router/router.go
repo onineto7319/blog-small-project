@@ -1,8 +1,6 @@
 package router
 
 import (
-	"net/http"
-
 	_ "github.com/blog-small-project/docs"
 	v1 "github.com/blog-small-project/internal/router/api/v1"
 	"github.com/gin-gonic/gin"
@@ -24,11 +22,6 @@ func New() *gin.Engine {
 	tag := v1.GetTagInstance()
 
 	apiv1 := r.Group("/api/v1")
-	{
-		apiv1.GET("/", func(c *gin.Context) { c.JSON(http.StatusOK, gin.H{"test": "ok"}) })
-
-	}
-
 	{
 		apiv1.GET("/article/:id", article.GetArticle)
 		apiv1.GET("/articles", article.GetAllArticle)
