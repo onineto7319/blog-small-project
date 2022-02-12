@@ -1,4 +1,4 @@
-package model
+package dto
 
 type Common struct {
 	ID         uint32 `json:"id"`
