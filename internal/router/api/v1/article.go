@@ -13,12 +13,10 @@ var (
 	articleInstance *article
 )
 
-func GetArticleInstance() *article {
-	lock := &sync.Mutex{}
+func NewArticle() *article {
+	var once sync.Once
 	if articleInstance == nil {
-		lock.Lock()
-		defer lock.Unlock()
-		articleInstance = &article{}
+		once.Do(func() { articleInstance = &article{} })
 	}
 	return articleInstance
 }

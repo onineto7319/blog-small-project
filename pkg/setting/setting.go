@@ -1,8 +1,6 @@
 package setting
 
 import (
-	"fmt"
-
 	"github.com/spf13/viper"
 )
 
@@ -16,11 +14,8 @@ func NewSetting() (*Setting, error) {
 	vp.SetConfigName("config")
 	vp.SetConfigType("yaml")
 
-	fmt.Println("vp:", vp)
-
 	err := vp.ReadInConfig()
 
-	fmt.Println("setting:", err)
 	if err != nil {
 		return nil, err
 	}

@@ -17,18 +17,17 @@ const docTemplate_swagger = `{
     "host": "{{.Host}}",
     "basePath": "{{.BasePath}}",
     "paths": {
-        "/api/v1/tags": {
-            "get": {
+        "/api/v1/tag": {
+            "put": {
                 "produces": [
                     "application/json"
                 ],
-                "summary": "取得單個標籤",
+                "summary": "更新標籤",
                 "parameters": [
                     {
-                        "maxLength": 100,
-                        "type": "string",
-                        "description": "標籤名稱",
-                        "name": "name",
+                        "type": "integer",
+                        "description": "標籤編號",
+                        "name": "id",
                         "in": "query"
                     }
                 ],
@@ -36,7 +35,147 @@ const docTemplate_swagger = `{
                     "200": {
                         "description": "成功",
                         "schema": {
-                            "$ref": "#/definitions/model.Tag"
+                            "$ref": "#/definitions/model.UpdateTagResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "請求錯誤",
+                        "schema": {
+                            "$ref": "#/definitions/errcode.Error"
+                        }
+                    },
+                    "500": {
+                        "description": "內部錯誤",
+                        "schema": {
+                            "$ref": "#/definitions/errcode.Error"
+                        }
+                    }
+                }
+            },
+            "post": {
+                "produces": [
+                    "application/json"
+                ],
+                "summary": "新增標籤",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "標籤編號",
+                        "name": "id",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "成功",
+                        "schema": {
+                            "$ref": "#/definitions/model.CreateTagResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "請求錯誤",
+                        "schema": {
+                            "$ref": "#/definitions/errcode.Error"
+                        }
+                    },
+                    "500": {
+                        "description": "內部錯誤",
+                        "schema": {
+                            "$ref": "#/definitions/errcode.Error"
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "produces": [
+                    "application/json"
+                ],
+                "summary": "刪除標籤",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "標籤編號",
+                        "name": "id",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "成功",
+                        "schema": {
+                            "$ref": "#/definitions/model.DeleteTagResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "請求錯誤",
+                        "schema": {
+                            "$ref": "#/definitions/errcode.Error"
+                        }
+                    },
+                    "500": {
+                        "description": "內部錯誤",
+                        "schema": {
+                            "$ref": "#/definitions/errcode.Error"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/tag/:id": {
+            "get": {
+                "produces": [
+                    "application/json"
+                ],
+                "summary": "取得單個標籤",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "標籤編號",
+                        "name": "id",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "成功",
+                        "schema": {
+                            "$ref": "#/definitions/model.GetTagResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "請求錯誤",
+                        "schema": {
+                            "$ref": "#/definitions/errcode.Error"
+                        }
+                    },
+                    "500": {
+                        "description": "內部錯誤",
+                        "schema": {
+                            "$ref": "#/definitions/errcode.Error"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/tags": {
+            "get": {
+                "produces": [
+                    "application/json"
+                ],
+                "summary": "取得標籤列表",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "狀態",
+                        "name": "state",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "成功",
+                        "schema": {
+                            "$ref": "#/definitions/model.GetTagResponse"
                         }
                     },
                     "400": {
@@ -59,44 +198,86 @@ const docTemplate_swagger = `{
         "errcode.Error": {
             "type": "object"
         },
-        "model.Tag": {
+        "model.CreateTagResponse": {
             "type": "object",
             "properties": {
-                "content": {
-                    "type": "string"
-                },
-                "conver_image_url": {
-                    "type": "string"
-                },
-                "create_by": {
+                "created_by": {
                     "type": "string"
                 },
                 "created_on": {
                     "type": "integer"
                 },
-                "deleted_on": {
+                "id": {
                     "type": "integer"
                 },
-                "desc": {
+                "name": {
                     "type": "string"
                 },
+                "state": {
+                    "type": "integer"
+                }
+            }
+        },
+        "model.DeleteTagResponse": {
+            "type": "object",
+            "properties": {
                 "id": {
                     "type": "integer"
                 },
                 "is_del": {
+                    "type": "boolean"
+                }
+            }
+        },
+        "model.GetTagResponse": {
+            "type": "object",
+            "properties": {
+                "created_by": {
+                    "type": "string"
+                },
+                "created_on": {
+                    "type": "integer"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "modifed_on": {
                     "type": "integer"
                 },
                 "modified_by": {
                     "type": "string"
                 },
-                "modified_on": {
-                    "type": "integer"
+                "name": {
+                    "type": "string"
                 },
                 "state": {
                     "type": "integer"
-                },
-                "title": {
+                }
+            }
+        },
+        "model.UpdateTagResponse": {
+            "type": "object",
+            "properties": {
+                "created_by": {
                     "type": "string"
+                },
+                "created_on": {
+                    "type": "integer"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "modifed_on": {
+                    "type": "integer"
+                },
+                "modified_by": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "state": {
+                    "type": "integer"
                 }
             }
         }

@@ -18,8 +18,8 @@ func New() *gin.Engine {
 		r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 	}
 
-	article := v1.GetArticleInstance()
-	tag := v1.GetTagInstance()
+	article := v1.NewArticle()
+	tag := v1.NewTag()
 
 	apiv1 := r.Group("/api/v1")
 	{

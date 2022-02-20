@@ -9,6 +9,7 @@ import (
 
 	"github.com/blog-small-project/global"
 	"github.com/blog-small-project/internal/router"
+	"github.com/blog-small-project/pkg/database"
 	"github.com/blog-small-project/pkg/setting"
 )
 
@@ -17,6 +18,11 @@ func init() {
 	if err != nil {
 		log.Fatalf("init.setupSetting err: %v", err)
 	}
+
+	err = setupDBEngine()
+	if err != nil {
+		log.Fatalf("init.setupDBEngine err: %v", err)
+	}
 }
 
 // @title 部落格系統
@@ -24,7 +30,6 @@ func init() {
 // @termsOfService https://github.com/blog-small-project
 func main() {
 	if herokuPort := os.Getenv("PORT"); herokuPort != "" {
-
 		global.ServerSetting.HttpPort = herokuPort
 	}
 
@@ -62,6 +67,18 @@ func setupSetting() error {
 
 	global.ServerSetting.ReadTimeout *= time.Second
 	global.ServerSetting.WriteTimeout *= time.Second
+
+	return nil
+}
+
+func setupDBEngine() error {
+	var err error
+
+	global.MysqlEngine, err = database.NewMySQLDBEngine(global.DatabaseMysqlSetting)
+
+	if err != nil {
+		return err
+	}
 
 	return nil
 }

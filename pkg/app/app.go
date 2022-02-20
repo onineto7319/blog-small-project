@@ -1,6 +1,8 @@
 package app
 
 import (
+	"net/http"
+
 	"github.com/blog-small-project/pkg/errcode"
 	"github.com/gin-gonic/gin"
 )
@@ -11,6 +13,14 @@ type response struct {
 
 func NewResponse(c *gin.Context) *response {
 	return &response{ctx: c}
+}
+
+func (r *response) ToResponse(data interface{}) {
+	if data == nil {
+		data = gin.H{}
+	}
+	r.ctx.JSON(http.StatusOK, data)
+	return
 }
 
 func (r *response) ToErrorResponse(err *errcode.Error) {
