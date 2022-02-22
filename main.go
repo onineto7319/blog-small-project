@@ -23,6 +23,11 @@ func init() {
 	if err != nil {
 		log.Fatalf("init.setupDBEngine err: %v", err)
 	}
+
+	err = createMysqlTables()
+	if err != nil {
+		log.Fatalf("init.createMysqlTables err: %v", err)
+	}
 }
 
 // @title 部落格系統
@@ -81,4 +86,8 @@ func setupDBEngine() error {
 	}
 
 	return nil
+}
+
+func createMysqlTables() error {
+	return database.CreateMysqlTables(global.MysqlEngine)
 }

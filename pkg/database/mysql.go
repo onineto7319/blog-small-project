@@ -33,5 +33,6 @@ func NewMySQLDBEngine(databaseMysqlSetting *setting.DatabaseMysqlSettings) (*sql
 
 	db.SetMaxIdleConns(databaseMysqlSetting.MaxIdleConns)
 	db.SetMaxOpenConns(databaseMysqlSetting.MaxOpenConns)
+
 	return db, nil
 }
