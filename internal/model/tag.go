@@ -46,10 +46,11 @@ type UpdateTagResponse struct {
 }
 
 type DeleteTagRequest struct {
-	ID uint32 `json:"id"`
+	ID         uint32 `json:"id"`
+	ModifiedBy string `json:"modified_by"`
 }
 
 type DeleteTagResponse struct {
-	ID    int64 `json:"id"`
-	IsDel bool  `json:"is_del"`
+	ID    uint32 `json:"id"`
+	IsDel bool   `json:"is_del"`
 }

@@ -2,6 +2,7 @@ package dao
 
 import (
 	"database/sql"
+	"fmt"
 	"time"
 
 	"github.com/blog-small-project/internal/dto"
@@ -16,8 +17,8 @@ type TagDaoInterface interface {
 	GetAll() ([]dto.Tag, error)
 	GetAllWithState(int8) ([]dto.Tag, error)
 	Create(dto.Tag) (int64, error)
-	Update(dto.Tag) (int64, error)
-	Delete(tagid uint32) (int64, error)
+	Update(dto.Tag) error
+	Delete(uint32, string) error
 }
 
 func NewTagDao(mysql *sql.DB) TagDaoInterface {
@@ -25,23 +26,21 @@ func NewTagDao(mysql *sql.DB) TagDaoInterface {
 }
 
 func (t *tag) Get(tagid uint32) (*dto.Tag, error) {
-	result := &dto.Tag{}
-
 	err := t.db.Ping()
 	if err != nil {
 		return nil, err
 	}
 	sqlquerystring := `SELECT id, name, state, created_on, created_by, modified_on, modified_by
 					   FROM blog_tag
-					   WHERE id= ?`
+					   WHERE id= ? AND is_del = 0;`
 
+	result := dto.Tag{}
 	err = t.db.QueryRow(sqlquerystring, tagid).Scan(&result.ID, &result.Name, &result.State,
 		&result.CreatedOn, &result.CreatedBy, &result.ModifiedOn, &result.ModifiedBy)
-
 	if err != nil {
 		return nil, err
 	}
-	return result, nil
+	return &result, nil
 }
 
 func (t *tag) GetAll() ([]dto.Tag, error) {
@@ -51,7 +50,8 @@ func (t *tag) GetAll() ([]dto.Tag, error) {
 		return nil, err
 	}
 	sqlqueryString := `SELECT id, name, state, created_on, created_by, modified_on, modified_by
-						  FROM blog_tag;`
+					   FROM blog_tag
+					   WHERE is_del = 0;`
 
 	queryRes, err := t.db.Query(sqlqueryString)
 
@@ -125,39 +125,39 @@ func (t *tag) Create(tag dto.Tag) (int64, error) {
 
 	return resId, nil
 }
-func (t *tag) Update(tag dto.Tag) (int64, error) {
+func (t *tag) Update(tag dto.Tag) error {
 	err := t.db.Ping()
 	if err != nil {
-		return -1, err
+		return err
 	}
-
+	fmt.Print(tag)
 	sqlupdatestring := `UPDATE blog_tag
-						SET name = ?, state = ?, modified_on = ?, modified_by = ?;`
+						SET name = ?, state = ?, modified_on = ?, modified_by = ?
+						WHERE id = ?`
 
-	res, err := t.db.Exec(sqlupdatestring, tag.Name, tag.State, time.Now().Unix(), tag.ModifiedBy)
+	_, err = t.db.Exec(sqlupdatestring, tag.Name, tag.State, time.Now().Unix(), tag.ModifiedBy, tag.ID)
 
 	if err != nil {
-		return -1, err
+		return err
 	}
-	resId, _ := res.LastInsertId()
-
-	return resId, nil
+	return nil
 }
-func (t *tag) Delete(tagid uint32) (int64, error) {
+func (t *tag) Delete(tagid uint32, modifiedBy string) error {
 	err := t.db.Ping()
 	if err != nil {
-		return -1, err
+		return err
 	}
 
 	sqldeletestring := `UPDATE blog_tag 
-						SET is_del = 1, modified_on = ?, modified_by = ?
+						SET is_del = 1, modified_on = ?, modified_by = ?, deleted_on = ?
 						WHERE id= ?;`
 
-	res, err := t.db.Exec(sqldeletestring, time.Now().Unix())
+	timeNow := time.Now().Unix()
+	_, err = t.db.Exec(sqldeletestring, timeNow, modifiedBy, timeNow, tagid)
 
 	if err != nil {
-		return -1, err
+		return err
 	}
 
-	return res.LastInsertId()
+	return nil
 }

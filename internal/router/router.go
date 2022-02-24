@@ -23,19 +23,19 @@ func New() *gin.Engine {
 
 	apiv1 := r.Group("/api/v1")
 	{
-		apiv1.GET("/article/:id", article.GetArticle)
+		apiv1.GET("/articles/:id", article.GetArticle)
 		apiv1.GET("/articles", article.GetAllArticle)
 		apiv1.POST("/article", article.CreateArticle)
-		apiv1.PUT("/article/:id", article.UpdateArticle)
-		apiv1.DELETE("/article/:id", article.DeleteArticle)
+		apiv1.PUT("/article", article.UpdateArticle)
+		apiv1.DELETE("/article", article.DeleteArticle)
 	}
 
 	{
-		apiv1.GET("/tag/:id", tag.GetTag)
+		apiv1.GET("/tags/:id", tag.GetTag)
 		apiv1.GET("/tags", tag.GetAllTag)
 		apiv1.POST("/tag", tag.CreateTag)
-		apiv1.PUT("/tag/:id", tag.UpdateTag)
-		apiv1.DELETE("/tag/:id", tag.DeleteTag)
+		apiv1.PUT("/tag", tag.UpdateTag)
+		apiv1.DELETE("/tag", tag.DeleteTag)
 	}
 
 	return r

@@ -1,7 +1,6 @@
 package v1
 
 import (
-	"fmt"
 	"strconv"
 	"sync"
 
@@ -73,7 +72,6 @@ func (t tag) GetAllTag(c *gin.Context) {
 	request := app.NewResponse(c)
 	state := c.Query("state")
 	model := model.GetTagRequest{}
-	fmt.Println("state:", state)
 	switch state {
 	case "":
 		fallthrough
@@ -108,8 +106,8 @@ func (t tag) CreateTag(c *gin.Context) {
 	srv := service.NewTag(global.MysqlEngine)
 	create := model.CreateTagRequest{}
 	request := app.NewResponse(c)
-
 	err := c.BindJSON(&create)
+
 	if err != nil {
 		errReponse := errcode.InvalidParams.WithDetails(err.Error())
 		request.ToErrorResponse(errReponse)
@@ -171,10 +169,10 @@ func (t tag) DeleteTag(c *gin.Context) {
 		return
 	}
 
-	res, err := srv.Delete(delete)
+	err = srv.Delete(delete)
 	if err != nil {
 		request.ToErrorResponse(deleteTagFail)
 	}
-	request.ToResponse(model.DeleteTagResponse{ID: res, IsDel: true})
+	request.ToResponse(model.DeleteTagResponse{ID: delete.ID, IsDel: true})
 	return
 }

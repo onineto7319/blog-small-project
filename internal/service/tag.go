@@ -19,7 +19,7 @@ type TagInterface interface {
 	GetAll(model.GetTagRequest) ([]model.GetTagResponse, error)
 	Create(model.CreateTagRequest) (model.CreateTagResponse, error)
 	Update(model.UpdateTagRequest) (model.UpdateTagResponse, error)
-	Delete(model.DeleteTagRequest) (int64, error)
+	Delete(model.DeleteTagRequest) error
 }
 
 func NewTag(mysqlDB *sql.DB) TagInterface {
@@ -64,7 +64,7 @@ func (t *tag) GetAll(requestmodel model.GetTagRequest) ([]model.GetTagResponse, 
 		return nil, err
 	}
 
-	res := []model.GetTagResponse{}
+	res := make([]model.GetTagResponse, 0)
 
 	for i := 0; i < len(dto); i++ {
 		dtoString, err := json.Marshal(dto[i])
@@ -108,13 +108,12 @@ func (t *tag) Create(requestmodel model.CreateTagRequest) (model.CreateTagRespon
 
 func (t *tag) Update(requestmodel model.UpdateTagRequest) (model.UpdateTagResponse, error) {
 	tagdao := dao.NewTagDao(t.db)
-	updateID, err := tagdao.Update(dto.Tag{Name: requestmodel.Name, State: int8(requestmodel.State), Common: dto.Common{ModifiedBy: requestmodel.ModifiedBy}})
+	err := tagdao.Update(dto.Tag{Name: requestmodel.Name, State: int8(requestmodel.State), Common: dto.Common{ID: requestmodel.ID, ModifiedBy: requestmodel.ModifiedBy}})
 	req := model.UpdateTagResponse{}
 	if err != nil {
 		return req, err
 	}
-
-	getDto, err := tagdao.Get(uint32(updateID))
+	getDto, err := tagdao.Get(requestmodel.ID)
 
 	if err != nil {
 		return req, err
@@ -134,6 +133,6 @@ func (t *tag) Update(requestmodel model.UpdateTagRequest) (model.UpdateTagRespon
 	return req, nil
 }
 
-func (t *tag) Delete(requestmodel model.DeleteTagRequest) (int64, error) {
-	return dao.NewTagDao(t.db).Delete(requestmodel.ID)
+func (t *tag) Delete(requestmodel model.DeleteTagRequest) error {
+	return dao.NewTagDao(t.db).Delete(requestmodel.ID, requestmodel.ModifiedBy)
 }
