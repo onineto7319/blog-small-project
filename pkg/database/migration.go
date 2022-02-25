@@ -11,12 +11,11 @@ import (
 func CreateMysqlTables(mysqlDriver *sql.DB) error {
 
 	driver, _ := mysql.WithInstance(mysqlDriver, &mysql.Config{})
-	m, err := migrate.NewWithDatabaseInstance("file:./migrations", "mysql", driver)
+	_, err := migrate.NewWithDatabaseInstance("file:./migrations", "mysql", driver)
 
 	if err != nil {
 		return err
 	}
-	m.Up()
 
 	return nil
 }
