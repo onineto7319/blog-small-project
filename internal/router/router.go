@@ -2,6 +2,7 @@ package router
 
 import (
 	_ "github.com/blog-small-project/docs"
+	"github.com/blog-small-project/internal/middleware"
 	v1 "github.com/blog-small-project/internal/router/api/v1"
 	"github.com/gin-gonic/gin"
 	ginSwagger "github.com/swaggo/gin-swagger"
@@ -14,14 +15,18 @@ func New() *gin.Engine {
 	r.Use(gin.Logger())
 	r.Use(gin.Recovery())
 
+	auth := v1.NewAuth()
+
 	{
 		r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
+		r.GET("/auth", auth.GetAuth)
 	}
 
 	article := v1.NewArticle()
 	tag := v1.NewTag()
 
 	apiv1 := r.Group("/api/v1")
+	apiv1.Use(middleware.JWT())
 	{
 		apiv1.GET("/articles/:id", article.GetArticle)
 		apiv1.GET("/articles", article.GetAllArticle)

@@ -7,4 +7,5 @@ import (
 var (
 	ServerSetting        *setting.ServerSettings
 	DatabaseMysqlSetting *setting.DatabaseMysqlSettings
+	JWTSetting           *setting.JWTSettings
 )
