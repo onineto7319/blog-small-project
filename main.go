@@ -11,6 +11,7 @@ import (
 	"github.com/blog-small-project/internal/router"
 	"github.com/blog-small-project/pkg/database"
 	"github.com/blog-small-project/pkg/setting"
+	"github.com/blog-small-project/pkg/util"
 )
 
 func init() {
@@ -95,5 +96,9 @@ func setupDBEngine() error {
 }
 
 func createMysqlTables() error {
-	return database.CreateMysqlTables(global.MysqlEngine)
+	sqlfiles, _ := util.GetFilesName(util.GetCurrentFileDir() + "/migrations")
+	if len(sqlfiles) > 0 {
+		return database.CreateMysqlTables(global.MysqlEngine)
+	}
+	return nil
 }

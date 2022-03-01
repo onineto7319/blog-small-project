@@ -1,7 +1,6 @@
 package setting
 
 import (
-	"fmt"
 	"time"
 )
 
@@ -30,8 +29,6 @@ type JWTSettings struct {
 }
 
 func (s *Setting) ReadSection(k string, v interface{}) error {
-
-	fmt.Println(k, v)
 	err := s.vp.UnmarshalKey(k, v)
 	if err != nil {
 		return err
