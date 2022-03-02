@@ -19,7 +19,7 @@ func New() *gin.Engine {
 
 	{
 		r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
-		r.GET("/auth", auth.GetAuth)
+		r.POST("/auth", auth.GetAuth)
 	}
 
 	article := v1.NewArticle()
