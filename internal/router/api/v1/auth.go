@@ -1,6 +1,7 @@
 package v1
 
 import (
+	"log"
 	"sync"
 
 	"github.com/blog-small-project/pkg/errcode"
@@ -27,13 +28,14 @@ func NewAuth() *auth {
 	return authInstance
 }
 
-func (a auth) GetAuth(c *gin.Context) {
+func (a auth) CheckAuth(c *gin.Context) {
 	request := app.NewResponse(c)
 
 	checkAuth := model.CheckAuthRequest{}
 	err := c.BindJSON(&checkAuth)
 
 	if err != nil {
+		log.Println(err)
 		errResponse := errcode.InvalidParams.WithDetails(err.Error())
 		request.ToErrorResponse(errResponse)
 		return
@@ -43,6 +45,7 @@ func (a auth) GetAuth(c *gin.Context) {
 
 	err = srv.CheckAuth(checkAuth)
 	if err != nil {
+		log.Println(err)
 		request.ToErrorResponse(errcode.UnauthorizedAuthNotExist)
 		return
 	}
@@ -50,6 +53,7 @@ func (a auth) GetAuth(c *gin.Context) {
 	token, err := app.GenerateToekn(checkAuth.AppKey, checkAuth.AppSecret)
 
 	if err != nil {
+		log.Println(err)
 		request.ToErrorResponse(errcode.UnauthorizedTokenGenerate)
 		return
 	}
