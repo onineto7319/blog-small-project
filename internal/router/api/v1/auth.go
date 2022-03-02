@@ -29,7 +29,6 @@ func NewAuth() *auth {
 }
 
 func (a auth) CheckAuth(c *gin.Context) {
-	c.Header("Access-Control-Allow-Origin", "*")
 	request := app.NewResponse(c)
 
 	checkAuth := model.CheckAuthRequest{}
