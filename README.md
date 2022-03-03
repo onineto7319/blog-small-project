@@ -19,7 +19,7 @@ Blog-Backend-Simple-Porject 是使用 Golang + MySQL 建立的簡易文章及標
 
 ****DB Structure****
 
-![ERD](/blog-small-project/assets/ERD.png)
+![ERD](./assets/ERD.png)
 ---
 
 ****API Reference****
