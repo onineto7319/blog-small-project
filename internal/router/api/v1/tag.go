@@ -1,6 +1,7 @@
 package v1
 
 import (
+	"log"
 	"strconv"
 	"sync"
 
@@ -45,6 +46,7 @@ func (t tag) GetTag(c *gin.Context) {
 	request := app.NewResponse(c)
 	id, err := strconv.ParseUint(c.Param("id"), 10, 32)
 	if err != nil {
+		log.Println(err)
 		errReponse := errcode.InvalidParams.WithDetails(err.Error())
 		request.ToErrorResponse(errReponse)
 		return
@@ -54,6 +56,7 @@ func (t tag) GetTag(c *gin.Context) {
 
 	res, err := srv.Get(model.GetTagRequest{ID: uint32(id)})
 	if err != nil {
+		log.Println(err)
 		request.ToErrorResponse(getTagFail)
 		return
 	}
@@ -89,6 +92,7 @@ func (t tag) GetAllTag(c *gin.Context) {
 	srv := service.NewTag(global.MysqlEngine)
 	res, err := srv.GetAll(model)
 	if err != nil {
+		log.Println(err)
 		request.ToErrorResponse(getTagListFail)
 		return
 	}
@@ -109,12 +113,14 @@ func (t tag) CreateTag(c *gin.Context) {
 	err := c.BindJSON(&create)
 
 	if err != nil {
+		log.Println(err)
 		errReponse := errcode.InvalidParams.WithDetails(err.Error())
 		request.ToErrorResponse(errReponse)
 		return
 	}
 	res, err := srv.Create(create)
 	if err != nil {
+		log.Println(err)
 		request.ToErrorResponse(createTagFail)
 		return
 	}
@@ -137,6 +143,7 @@ func (t tag) UpdateTag(c *gin.Context) {
 
 	err := c.BindJSON(&update)
 	if err != nil {
+		log.Println(err)
 		errResponse := errcode.InvalidParams.WithDetails(err.Error())
 		request.ToErrorResponse(errResponse)
 		return
@@ -144,6 +151,7 @@ func (t tag) UpdateTag(c *gin.Context) {
 	res, err := srv.Update(update)
 
 	if err != nil {
+		log.Println(err)
 		request.ToErrorResponse(updateTagFail)
 	}
 
@@ -164,6 +172,7 @@ func (t tag) DeleteTag(c *gin.Context) {
 	err := c.BindJSON(&delete)
 	request := app.NewResponse(c)
 	if err != nil {
+		log.Println(err)
 		errReponse := errcode.InvalidParams.WithDetails(err.Error())
 		request.ToErrorResponse(errReponse)
 		return
@@ -171,6 +180,7 @@ func (t tag) DeleteTag(c *gin.Context) {
 
 	err = srv.Delete(delete)
 	if err != nil {
+		log.Println(err)
 		request.ToErrorResponse(deleteTagFail)
 	}
 	request.ToResponse(model.DeleteTagResponse{ID: delete.ID, IsDel: true})

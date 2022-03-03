@@ -1,6 +1,7 @@
 package v1
 
 import (
+	"log"
 	"strconv"
 	"sync"
 
@@ -35,6 +36,7 @@ func (a article) GetArticle(c *gin.Context) {
 	request := app.NewResponse(c)
 	id, err := strconv.ParseUint(c.Param("id"), 10, 32)
 	if err != nil {
+		log.Println(err)
 		errReponse := errcode.InvalidParams.WithDetails(err.Error())
 		request.ToErrorResponse(errReponse)
 		return
@@ -44,6 +46,7 @@ func (a article) GetArticle(c *gin.Context) {
 
 	res, err := srv.Get(model.GetArticleRequest{ID: uint32(id)})
 	if err != nil {
+		log.Println(err)
 		request.ToErrorResponse(getArticleFail)
 		return
 	}
@@ -71,6 +74,7 @@ func (a article) GetAllArticle(c *gin.Context) {
 	srv := service.NewArticle(global.MysqlEngine)
 	res, err := srv.GetAll(model)
 	if err != nil {
+		log.Println(err)
 		request.ToErrorResponse(getArticleListFail)
 		return
 	}
@@ -83,12 +87,14 @@ func (a article) CreateArticle(c *gin.Context) {
 
 	err := c.BindJSON(&create)
 	if err != nil {
+		log.Println(err)
 		errReponse := errcode.InvalidParams.WithDetails(err.Error())
 		request.ToErrorResponse(errReponse)
 		return
 	}
 	res, err := srv.Create(create)
 	if err != nil {
+		log.Println(err)
 		request.ToErrorResponse(createArticleFail)
 		return
 	}
@@ -103,6 +109,7 @@ func (a article) UpdateArticle(c *gin.Context) {
 
 	err := c.BindJSON(&update)
 	if err != nil {
+		log.Println(err)
 		errResponse := errcode.InvalidParams.WithDetails(err.Error())
 		request.ToErrorResponse(errResponse)
 		return
@@ -110,6 +117,7 @@ func (a article) UpdateArticle(c *gin.Context) {
 	res, err := srv.Update(update)
 
 	if err != nil {
+		log.Println(err)
 		request.ToErrorResponse(updateArticleFail)
 	}
 
@@ -122,6 +130,7 @@ func (a article) DeleteArticle(c *gin.Context) {
 	err := c.BindJSON(&delete)
 	request := app.NewResponse(c)
 	if err != nil {
+		log.Println(err)
 		errReponse := errcode.InvalidParams.WithDetails(err.Error())
 		request.ToErrorResponse(errReponse)
 		return
@@ -129,6 +138,7 @@ func (a article) DeleteArticle(c *gin.Context) {
 
 	err = srv.Delete(delete)
 	if err != nil {
+		log.Println(err)
 		request.ToErrorResponse(deleteArticleFail)
 	}
 	request.ToResponse(model.DeleteArticleResponse{ID: delete.ID, IsDel: true})
