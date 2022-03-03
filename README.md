@@ -24,7 +24,7 @@ Blog-Backend-Simple-Porject 是使用 Golang + MySQL 建立的簡易文章及標
 
 ****API Reference****
 
-[PostMan](Postman：https://www.postman.com/onineto7319/workspace/blog-small-project/request/5284931-703f8f85-6898-407d-baf1-2c1d52b4c7ef)
+[PostMan](https://www.postman.com/onineto7319/workspace/blog-small-project/request/5284931-703f8f85-6898-407d-baf1-2c1d52b4c7ef)
 
 ---
 
