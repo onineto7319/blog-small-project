@@ -1,0 +1,177 @@
+definitions:
+  errcode.Error:
+    type: object
+  model.CreateTagResponse:
+    properties:
+      created_by:
+        type: string
+      created_on:
+        type: integer
+      id:
+        type: integer
+      name:
+        type: string
+      state:
+        type: integer
+    type: object
+  model.DeleteTagResponse:
+    properties:
+      id:
+        type: integer
+      is_del:
+        type: boolean
+    type: object
+  model.GetTagResponse:
+    properties:
+      created_by:
+        type: string
+      created_on:
+        type: integer
+      id:
+        type: integer
+      modifed_on:
+        type: integer
+      modified_by:
+        type: string
+      name:
+        type: string
+      state:
+        type: integer
+    type: object
+  model.UpdateTagResponse:
+    properties:
+      created_by:
+        type: string
+      created_on:
+        type: integer
+      id:
+        type: integer
+      modifed_on:
+        type: integer
+      modified_by:
+        type: string
+      name:
+        type: string
+      state:
+        type: integer
+    type: object
+info:
+  contact: {}
+  termsOfService: https://github.com/blog-small-project
+  title: 部落格系統
+  version: v1.0
+paths:
+  /api/v1/tag:
+    delete:
+      parameters:
+      - description: 標籤編號
+        in: query
+        name: id
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 成功
+          schema:
+            $ref: '#/definitions/model.DeleteTagResponse'
+        "400":
+          description: 請求錯誤
+          schema:
+            $ref: '#/definitions/errcode.Error'
+        "500":
+          description: 內部錯誤
+          schema:
+            $ref: '#/definitions/errcode.Error'
+      summary: 刪除標籤
+    post:
+      parameters:
+      - description: 標籤編號
+        in: query
+        name: id
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 成功
+          schema:
+            $ref: '#/definitions/model.CreateTagResponse'
+        "400":
+          description: 請求錯誤
+          schema:
+            $ref: '#/definitions/errcode.Error'
+        "500":
+          description: 內部錯誤
+          schema:
+            $ref: '#/definitions/errcode.Error'
+      summary: 新增標籤
+    put:
+      parameters:
+      - description: 標籤編號
+        in: query
+        name: id
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 成功
+          schema:
+            $ref: '#/definitions/model.UpdateTagResponse'
+        "400":
+          description: 請求錯誤
+          schema:
+            $ref: '#/definitions/errcode.Error'
+        "500":
+          description: 內部錯誤
+          schema:
+            $ref: '#/definitions/errcode.Error'
+      summary: 更新標籤
+  /api/v1/tag/:id:
+    get:
+      parameters:
+      - description: 標籤編號
+        in: query
+        name: id
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 成功
+          schema:
+            $ref: '#/definitions/model.GetTagResponse'
+        "400":
+          description: 請求錯誤
+          schema:
+            $ref: '#/definitions/errcode.Error'
+        "500":
+          description: 內部錯誤
+          schema:
+            $ref: '#/definitions/errcode.Error'
+      summary: 取得單個標籤
+  /api/v1/tags:
+    get:
+      parameters:
+      - description: 狀態
+        in: query
+        name: state
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 成功
+          schema:
+            $ref: '#/definitions/model.GetTagResponse'
+        "400":
+          description: 請求錯誤
+          schema:
+            $ref: '#/definitions/errcode.Error'
+        "500":
+          description: 內部錯誤
+          schema:
+            $ref: '#/definitions/errcode.Error'
+      summary: 取得標籤列表
+swagger: "2.0"

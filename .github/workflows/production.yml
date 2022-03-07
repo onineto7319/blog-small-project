@@ -2,9 +2,9 @@ name: Heroku
 
 on:
   push:
-    branches: [ main ]
-  pull_request:
-    branches: [ main ]
+    branches:
+      - master
+    
 
 jobs:
   build:
@@ -17,3 +17,4 @@ jobs:
           heroku_api_key: ${{ secrets.HEROKU_API_KEY }}
           heroku_app_name: 'blog-small-project'
           heroku_email: 'onineto7319@gmail.com'
+          branch: 'master'

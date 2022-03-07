@@ -1,0 +1,18 @@
+Server:
+  HttpPort: 8080
+  ReadTimeout: 60
+  WriteTImeout: 60
+DatabaseMysql:
+  DBType: mysql
+  Username: root
+  Password: 1234
+  Host: 127.0.0.1:3306
+  DBName: blog_service
+  Charset: utf8
+  ParseTime: True
+  MaxIdleConns: 10
+  MaxOpenConns: 30
+JWT:
+    Secret: tdj89035
+    Issuer: blog-service
+    Expire: 7200
